@@ -5,16 +5,16 @@ import numpy as np
 import pandas as pd
 
 
-def is_increasing_time(x):
+def is_increasing_time(x) -> bool:
     if isinstance(x, pd.offsets.BaseOffset):
         return "-" in x.freqstr  # I can't find a better way to handle this....
     else:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 def increase_date_freq(dates: pd.DatetimeIndex, infill_num: Union[int, float]) -> pd.DatetimeIndex:
     if dates.freq is not None:
-        return pd.date_range(start=dates[0], end=dates[-1], freq=dates.freq/infill_num)
+        return pd.date_range(start=dates[0], end=dates[-1], freq=dates.freq / infill_num)
     else:
         if not isinstance(infill_num, int):
             raise ValueError(f"expected `infill_num` to by an integer if `dates` has no set freq, but got {infill_num}")
@@ -23,7 +23,7 @@ def increase_date_freq(dates: pd.DatetimeIndex, infill_num: Union[int, float]) -
 
 
 def decrease_date_freq(dates: pd.DatetimeIndex, infill_num: Union[int, float]) -> pd.DatetimeIndex:
-    new_dates = pd.DatetimeIndex(data=extract(dates, extract_num=infill_num), freq='infer')
+    new_dates = pd.DatetimeIndex(data=extract(dates, extract_num=infill_num), freq="infer")
     if new_dates.freq is None:
         warn("decrease_date_freq was unable to infer frequency, this may create problems with downstream operations.")
     return new_dates
@@ -75,7 +75,7 @@ def infill(arr: Sequence, infill_num: int) -> np.ndarray:
 
     for sub_sampling_index in range(2, infill_num + 1):
         infilling_values = arr[:-1] + (sub_sampling_index - 1) * x_diff / infill_num
-        infilled_x[sub_sampling_index - 1::infill_num] = infilling_values
+        infilled_x[sub_sampling_index - 1 :: infill_num] = infilling_values
 
     return infilled_x
 
@@ -165,10 +165,10 @@ def center_value(arr: Sequence) -> float:
         raise ValueError
 
     n = len(arr)
-    n_over_2 = n//2
+    n_over_2 = n // 2
 
     if n % 2:
-        mid_left, mid_right = arr[n_over_2 - 1:n_over_2 + 1]
+        mid_left, mid_right = arr[n_over_2 - 1 : n_over_2 + 1]
         return (mid_left + mid_right) / 2
     else:
         return arr[n_over_2]

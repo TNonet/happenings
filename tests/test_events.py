@@ -3,8 +3,8 @@ import datetime
 import numpy as np
 import pandas as pd
 
-from evendar.core import function_event
-from evendar.event import MONTHS
+from happenings.core import function_event
+from happenings.event import MONTHS
 
 JAN_1_2019 = datetime.datetime.strptime("2019-01-01", "%Y-%M-%d")
 JAN_1_2020 = datetime.datetime.strptime("2020-01-01", "%Y-%M-%d")
@@ -18,6 +18,7 @@ FEB_EVENT = MONTHS["February"]
 JAN_OR_FEB_EVENT = function_event(name="Jan_or_Feb",
                                   function=lambda x: x.month in [1, 2],
                                   vectorized=False)
+
 
 def test_month_events():
     assert sum(JAN_EVENT.sample_from(dates=DATES_2020)) == 31
