@@ -5,19 +5,6 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-dependencies = [
-    "numpy >= 1.19",
-    "pandas",
-    "scipy",
-    "dateutil",
-]
-
-[project.optional-dependencies]
-test = [
-    "pytest",
-    "hypothesis",
-]
-
 [tool.black]
 line-length = 121
 

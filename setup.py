@@ -23,5 +23,9 @@ setup(
     packages=find_packages(where="happenings"),
     python_requires=">=3.7",
     extra_requires=['hypothesis', 'pytest'],
-    install_requires=['numpy', 'scipy', 'pandas', 'python-dateutil']
+    install_requires=['numpy>=1.19.0',
+                      'scipy',
+                      'pandas>=0.25',
+                      'python-dateutil'
+                      ]
 )
