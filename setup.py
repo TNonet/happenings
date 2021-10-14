@@ -22,7 +22,7 @@ setup(
     ],
     packages=find_packages(where="happenings"),
     python_requires=">=3.7",
-    extra_requires={"test": [
+    extra_requires={"tests": [
         'hypothesis',
         'pytest',
     ]
