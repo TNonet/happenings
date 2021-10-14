@@ -23,6 +23,8 @@ setup(
     packages=find_packages(where="happenings"),
     python_requires=">=3.7",
     extras_require={"test": [
+        "attrs>=19.2.0",  # Usually installed by hypothesis, but current issue
+        # #https://github.com/HypothesisWorks/hypothesis/issues/2113
         'hypothesis',
         'pytest',
     ]
