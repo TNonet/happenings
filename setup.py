@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="happenings",
-    version="0.0.1",
+    version="0.0.2",
     author="Tim Nonet",
     author_email="tim.nonet@gmail.com",
     description="A utility package for creating complex event based time-series data",
