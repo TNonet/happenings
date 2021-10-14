@@ -31,7 +31,7 @@ for index, event_name in enumerate(
     def _lambda(i):
         return lambda x: x.month == i + 1
 
-    MONTHS[event_name] = function_event(_lambda(index), vectorized=True, name=event_name, dtype=np.bool)
+    MONTHS[event_name] = function_event(_lambda(index), vectorized=True, name=event_name, dtype=np.bool_)
 
 DAY_OF_MONTH = function_event(lambda x: x.day, vectorized=True, name="Day", dtype=np.int8)
 
