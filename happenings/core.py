@@ -98,13 +98,13 @@ def return_as_series(sample_from: Callable):
     return _as_series
 
 
-def validates_date_freq(sample_from: Callable):
+def validates_dates(sample_from: Callable):
     @wraps(sample_from)
-    def _validate_date_freq(self, dates: DatetimeIndex, *args, **kwargs) -> Sequence:
+    def _validate_dates(self, dates: DatetimeIndex, *args, **kwargs) -> Sequence:
         self._validate_dates(dates)
         return sample_from(self, dates, *args, **kwargs)
 
-    return _validate_date_freq
+    return _validate_dates
 
 
 def flip_dates_when_reversed(sample_from: Callable):
@@ -236,6 +236,8 @@ class Event(NumpyDunders, ABC, metaclass=TransparentNumpySubclass):
         return self.sample_from(dates[::-1])[::-1]
 
     def _validate_dates(self, dates: DatetimeIndex):
+        if not isinstance(dates, DatetimeIndex) or dates.ndim != 1:
+            raise ValueError(f"expected dates to be a single dimension DatetimeIndex, but got {dates}")
         if dates.freq is None:
             raise ValueError("expected dates to have a set freq, but got None")
 
@@ -483,7 +485,7 @@ class FunctionalEvent(Event):
     vectorized: bool
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
         if self.vectorized:
@@ -513,7 +515,7 @@ class DerivedEvent(Event):
         )
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
         # Recursive method. Could refactor to stack/queue with memorization, but don't see the need.
@@ -589,12 +591,9 @@ class ConvolvedEvent(Event):
         )
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
-        if dates.ndim != 1:
-            raise NotImplementedError(f"Only 1D dates are allowed in {ConvolvedEvent} samples.")
-
         infilled_dates = increase_date_freq(dates, self.sub_sampling)
 
         if isinstance(self.window, Event):
@@ -656,7 +655,7 @@ class LinearInterpolationEvent(Event):
     to_float_datetime: TIMEDELTA_LIKE = np.timedelta64(1, "ns")
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
         dates_from_origin = to_periods(dates=dates, period=self.to_float_datetime, base_date=self.x_dates[0])
@@ -678,7 +677,7 @@ class FourierFunctionEvent(FunctionalEvent):
     order: int
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
         dates_as_periods = to_periods(dates=dates, period=self.seasonal_period)
@@ -712,7 +711,7 @@ class BufferedEvent(Event):
             raise ValueError(f"expected `by` to be a positive width instance of {TIMEDELTA_LIKE}")
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: pd.DatetimeIndex) -> pd.Series:
         values = self.event.sample_from(dates)
@@ -753,7 +752,7 @@ class ScaledEvent(Event):
             raise ValueError(f"expected event to be an instance of {Event}, but got {type(self.event)}")
 
     @return_as_series
-    @validates_date_freq
+    @validates_dates
     @flip_dates_when_reversed
     def sample_from(self, dates: pd.DatetimeIndex):
         values = self.event.sample_from(dates)
