@@ -1,5 +1,7 @@
 # happenings - convenient timeseries creation 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Coverage Status](https://coveralls.io/repos/github/TNonet/happenings/badge.svg?branch=main)](https://coveralls.io/github/TNonet/happenings?branch=main)[![Build Status](https://app.travis-ci.com/TNonet/happenings.svg?branch=main)](https://app.travis-ci.com/TNonet/happenings)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Coverage Status](https://coveralls.io/repos/github/TNonet/happenings/badge.svg?branch=main)](https://coveralls.io/github/TNonet/happenings?branch=main)
+[![Build Status](https://app.travis-ci.com/TNonet/happenings.svg?branch=main)](https://app.travis-ci.com/TNonet/happenings)
 
 
 The _happenings_ modudule is lightweight utility package built on Numpy/Pandas for creating complex event based time-series data
