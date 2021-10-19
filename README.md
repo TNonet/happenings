@@ -12,6 +12,13 @@ _happenings_ can be installed from PyPi using pip:
 pip install happenings
 ```
 
+## Testing
+As _happenings_ is intended be lightweight, testing packages are not installed unless specified as extras which can also be installed from PyPi using pip:
+```bash
+pip install -e happenings.[test]
+pytest
+```
+
 # Code, Issues, and Contribution
 The code and issue tracker are hosted on GitHub: https://github.com/TNonet/happenings/
 
