@@ -236,8 +236,8 @@ class Event(NumpyDunders, ABC, metaclass=TransparentNumpySubclass):
         return self.sample_from(dates[::-1])[::-1]
 
     def _validate_dates(self, dates: DatetimeIndex):
-        if not isinstance(dates, DatetimeIndex) or dates.ndim != 1:
-            raise ValueError(f"expected dates to be a single dimension DatetimeIndex, but got {dates}")
+        if not isinstance(dates, DatetimeIndex):
+            raise TypeError(f"expected dates to be a single dimension DatetimeIndex, but got {dates}")
         if dates.freq is None:
             raise ValueError("expected dates to have a set freq, but got None")
 
@@ -596,7 +596,7 @@ class ConvolvedEvent(Event):
     def sample_from(self, dates: DatetimeIndex) -> pd.Series:
         infilled_dates = increase_date_freq(dates, self.sub_sampling)
 
-        if isinstance(self.window, Event):
+        if issubclass(type(self.window), Event):
             win = self.window.sample_from(infilled_dates)
         else:
             win = self.window
@@ -605,7 +605,7 @@ class ConvolvedEvent(Event):
             in1=self.event.sample_from(infilled_dates), in2=win, mode=self.mode, method=self.method,
         )
 
-        return extract(infilled_convolve, extract_num=self.sub_sampling) / sum(win)
+        return extract(infilled_convolve, extract_num=self.sub_sampling) #/ sum(win)
 
 
 def to_periods(
