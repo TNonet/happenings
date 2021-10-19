@@ -31,8 +31,8 @@ setup(
     },
     install_requires=[
         'numpy>=1.19.0',
-        'scipy',
-        'pandas>=0.25',
+        'scipy>=1.1.0',
+        'pandas>=1.0.0',
         'python-dateutil'
     ]
 )
